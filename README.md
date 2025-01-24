@@ -22,3 +22,5 @@ git pull origin master
 5. Pushing Changes
 Once your changes are ready, push your branch to the remote repository:
 git push origin <branch-name>
+
+JU LUTEM MOS PUNONI NE MASTER FALEMINDERIT PER MIRKUPTIM !
