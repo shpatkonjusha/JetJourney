@@ -1,4 +1,4 @@
-package com.example.jetjourney.entities;
+package com.example.jetjourney.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
