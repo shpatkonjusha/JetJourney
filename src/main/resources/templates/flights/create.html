@@ -1,0 +1,110 @@
+
+<div th:replace="shared/layout :: layout('Welcome to My Page', ~{::section}, ~{::ol.breadcrumb})">
+
+    <section>
+        <main id="main" class="main">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/flights}">Flights</a></li>
+                <li class="breadcrumb-item active">Create</li>
+            </ol>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Register new Flight</h5>
+
+                <!-- Vertical Form -->
+                <form class="row g-3" th:object="${flight}" method="post" id="flightForm">
+
+
+                    <!-- Flight Number -->
+                    <div class="row mb-9">
+                        <label for="flightNumber" class="col-sm-3 col-form-label">Flight No:</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" th:field="*{flightNumber}" required minlength="1" maxlength="100"/>
+                        </div>
+
+                    </div>
+
+                    <!-- Origin -->
+                    <div class="row mb-9">
+                        <label for="origin" class="col-sm-3 col-form-label">Origin:</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" th:field="*{origin}" required/>
+                        </div>
+
+                    </div>
+
+                    <!-- Destination -->
+                    <div class="row mb-9">
+                        <label for="destination" class="col-sm-3 col-form-label">Destination:</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" th:field="*{destination}" required/>
+                        </div>
+
+                    </div>
+
+                    <!-- Departure Time -->
+                    <div class="row mb-9">
+                        <label for="departureTime" class="col-sm-3 col-form-label">Departure Time:</label>
+                        <div class="col-sm-5">
+                            <input type="datetime-local" class="form-control" th:field="*{departureTime}" required/>
+                        </div>
+
+                    </div>
+
+                    <!-- Arrival Time -->
+                    <div class="row mb-9">
+                        <label for="arrivalTime" class="col-sm-3 col-form-label">Arrival Time:</label>
+                        <div class="col-sm-5">
+                            <input type="datetime-local" class="form-control" th:field="*{arrivalTime}" required/>
+                        </div>
+
+                    </div>
+
+                    <!-- Price -->
+                    <div class="row mb-9">
+                        <label for="price" class="col-sm-3 col-form-label">Price:</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" th:field="*{price}" required/>
+                        </div>
+
+                    </div>
+
+                    <!-- Available Seats -->
+                    <div class="row mb-9">
+                        <label for="availableSeats" class="col-sm-3 col-form-label">Available seats:</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" th:field="*{availableSeats}" required/>
+                        </div>
+
+                    </div>
+
+                    <!-- Status (Default to Active) -->
+                    <div class="row mb-12">
+                        <label for="status" class="col-sm-3 col-form-label">Status:</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" th:field="*{status}">
+                                <option value="ACTIVE" th:selected="${flight.status == 'ACTIVE'}">Active</option>
+                                <option value="INACTIVE" th:selected="${flight.status == 'INACTIVE'}">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Submit and Reset buttons -->
+                    <div class="row mb-9">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+
+                            <a onclick="window.history.back()" class="btn btn-secondary" style="float:right">
+                                <i class="bi bi-arrow-left"></i> Back to previous page
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        </main>
+    </section>
+</div>
