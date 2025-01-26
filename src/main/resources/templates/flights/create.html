@@ -74,7 +74,7 @@
                     <div class="row mb-9">
                         <label for="availableSeats" class="col-sm-3 col-form-label">Available seats:</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" th:field="*{availableSeats}" required/>
+                            <input type="number" class="form-control" th:field="*{availableSeats}" required min="0"/>
                         </div>
 
                     </div>

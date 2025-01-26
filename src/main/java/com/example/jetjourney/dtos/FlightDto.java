@@ -1,10 +1,7 @@
 package com.example.jetjourney.dtos;
 
 import com.example.jetjourney.enums.FlightStatus;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -42,7 +39,8 @@ public class FlightDto {
 
     @PositiveOrZero(message = "Available seats must be positive or zero")
     @NotNull(message = "Available seats is required")
-    private Integer availableSeats;
+    @Min(value = 0, message = "Available seats cannot be negative.")
+    private int availableSeats;
 
     @NotNull(message = "Status is required")
     private FlightStatus status;
