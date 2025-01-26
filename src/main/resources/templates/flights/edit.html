@@ -1,0 +1,29 @@
+
+<div th:replace="shared/layout :: layout('Welcome to My Page', ~{::section}, ~{::ol.breadcrumb})">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/flights}">Flights</a></li>
+        <li class="breadcrumb-item active">Edit</li>
+    </ol>
+    <section>
+        <main id="main" class="main">
+
+        <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Modify the Flight</h5>
+
+            <!-- Edit Form for Flight -->
+            <th:block th:replace="~{/flights/create.html::#flightForm}" th:if="${flight!=null}"></th:block>
+
+            <!-- Alert if Flight not found -->
+            <div th:unless="${flight!=null}">
+                <div class="alert alert-danger" role="alert">
+                    Flight not found
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </main>
+    </section>
+</div>

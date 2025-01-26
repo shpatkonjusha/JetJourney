@@ -1,0 +1,60 @@
+<div th:replace="shared/layout :: layout('Welcome to Flight Management', ~{::section}, ~{::ol.breadcrumb})">
+    <section>
+        <main id="main" class="main">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/flights}">Flights</a></li>
+                <li class="breadcrumb-item active">List</li>
+            </ol>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">List of Flights</h5>
+
+                <!-- Button to add a new flight -->
+                <div class="row col-2">
+                    <a th:href="@{/flights/create}" class="btn btn-primary btn-sm">+ Add New Flight</a>
+                    <hr/>
+                </div>
+
+                <!-- Alert when there are no flights in the system -->
+                <div class="row col" th:unless="${flights != null && flights.size() > 0}">
+                    <div class="alert alert-warning" role="alert">
+                        <strong>There are no flights in the system!</strong>
+                    </div>
+                </div>
+
+                <!-- Table displaying the list of flights -->
+                <table class="table table-hover" th:if="${flights != null && flights.size() > 0}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Flight Number</th>
+                        <th scope="col">Departure</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Departure Time</th>
+                        <th scope="col">Arrival Time</th>
+                        <th scope="col">(Action)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="flight : ${flights}" th:object="${flight}">
+                        <td th:text="*{flightNumber}"></td>
+                        <td th:text="*{departureTime}"></td>
+                        <td th:text="*{destination}"></td>
+                        <td th:text="*{departureTime}"></td>
+                        <td th:text="*{arrivalTime}"></td>
+                        <td>
+                            <a th:href="@{/flights/{id}/details(id=*{id})}" class="btn btn-secondary btn-sm">Details</a>
+                            <a th:href="@{/flights/{id}/edit(id=*{id})}" class="btn btn-primary btn-sm">Edit</a>
+                            <a th:href="@{/flights/{id}/delete(id=*{id})}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure you want to delete this flight?')">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- End Table with hoverable rows -->
+
+            </div>
+        </div>
+        </main>
+    </section>
+</div>
