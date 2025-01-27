@@ -1,0 +1,101 @@
+<div th:replace="shared/layout :: layout('Reservation Details', ~{::section}, ~{::ol.breadcrumb})">
+
+    <section>
+        <main id="main" class="main">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/reservations}">Reservations</a></li>
+                <li class="breadcrumb-item active">Details</li>
+            </ol>
+
+            <section class="section profile" id="reservationDetails">
+                <div class="card" th:unless="${reservation != null}">
+                    <div class="card-body">
+                        <div style="margin: 5px;">
+                            <div class="alert alert-danger" role="alert">
+                                Reservation not found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" th:object="${reservation}" th:if="${reservation != null}">
+                    <div class="col-xl-4">
+
+                        <div class="card">
+                            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                                <!-- Display reservation details -->
+                                <h2><span th:text="*{id}"></span></h2>
+                                <h3>Reservation Details</h3>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xl-8">
+
+                        <div class="card">
+                            <div class="card-body pt-3">
+                                <!-- Reservation Details -->
+                                <h5 class="card-title">Reservation Information</h5>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Reservation ID</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="*{id}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Flight Number</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="${reservation.flight.flightNumber}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Origin</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="${reservation.flight.origin}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Destination</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="${reservation.flight.destination}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Departure Time</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="${reservation.flight.departureTime}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Arrival Time</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="${reservation.flight.arrivalTime}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Passenger Name</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="*{firstName} + ' ' + *{lastName}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Email</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="*{email}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                                    <div class="col-lg-9 col-md-8"><span th:text="*{phoneNumber}"></span></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Status</div>
+                                    <div class="col-lg-9 col-md-8">
+                                        <span th:text="*{status}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </main>
+    </section>
+</div>

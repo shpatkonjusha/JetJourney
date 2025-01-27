@@ -1,0 +1,103 @@
+<div th:replace="shared/layout :: layout('Create New Reservation', ~{::section}, ~{::ol.breadcrumb})">
+    <section>
+        <main id="main" class="main">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/reservations}">Reservations</a></li>
+                <li class="breadcrumb-item active">Create</li>
+            </ol>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Create New Reservation</h5>
+
+                    <!-- Reservation Form -->
+                    <form th:action="@{/reservations/{flightId}/create(flightId=${flight.id})}" th:object="${reservation}" method="post">
+                        <!-- Hidden Flight ID -->
+                        <input type="hidden" th:field="*{flight.id}" th:value="${flight.id}" />
+
+                        <!-- Flight Information -->
+                        <div class="row mb-3">
+                            <label for="flightNumber" class="col-sm-3 col-form-label">Flight No:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" th:value="${flight.flightNumber}" readonly />
+                            </div>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="row mb-3">
+                            <label for="firstName" class="col-sm-3 col-form-label">First Name:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" th:field="*{firstName}" placeholder="Enter First Name" required minlength="1" maxlength="100" />
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="row mb-3">
+                            <label for="lastName" class="col-sm-3 col-form-label">Last Name:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" th:field="*{lastName}" placeholder="Enter Last Name" required minlength="1" maxlength="100" />
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="row mb-3">
+                            <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                            <div class="col-sm-5">
+                                <input type="email" class="form-control" th:field="*{email}" placeholder="Enter Email Address" required />
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="row mb-3">
+                            <label for="phone" class="col-sm-3 col-form-label">Phone:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" th:field="*{phone}" placeholder="Enter Phone Number" required />
+                            </div>
+                        </div>
+
+                        <!-- Personal ID -->
+                        <div class="row mb-3">
+                            <label for="personalId" class="col-sm-3 col-form-label">Personal ID:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" th:field="*{personalId}" placeholder="Enter Personal ID" required />
+                            </div>
+                        </div>
+
+                        <!-- Number of Seats -->
+                        <div class="row mb-3">
+                            <label for="seats" class="col-sm-3 col-form-label">Number of Seats:</label>
+                            <div class="col-sm-5">
+                                <input type="number" class="form-control" th:field="*{seatNumber}" placeholder="Enter Number of Seats" required min="1" max="${flight.availableSeats}" />
+                            </div>
+                        </div>
+
+                        <!-- Special Requests -->
+
+                        <!-- Status -->
+                        <div class="row mb-3">
+                            <label for="status" class="col-sm-3 col-form-label">Status:</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" th:field="*{status}">
+                                    <option value="CONFIRMED" th:selected="${reservation.status == 'CONFIRMED'}">Confirmed</option>
+                                    <option value="PENDING" th:selected="${reservation.status == 'PENDING'}">Pending</option>
+                                    <option value="CANCELLED" th:selected="${reservation.status == 'CANCELLED'}">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Submit and Reset buttons -->
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-danger">Reset</button>
+                                <a onclick="window.history.back()" class="btn btn-secondary float-end">
+                                    <i class="bi bi-arrow-left"></i> Back
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </section>
+</div>

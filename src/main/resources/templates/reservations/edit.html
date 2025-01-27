@@ -1,0 +1,29 @@
+<div th:replace="shared/layout :: layout('Edit Reservation', ~{::section}, ~{::ol.breadcrumb})">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/reservations}">Reservations</a></li>
+        <li class="breadcrumb-item active">Edit</li>
+    </ol>
+
+    <section>
+        <main id="main" class="main">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Modify the Reservation</h5>
+
+                    <!-- Edit Form for Reservation -->
+                    <th:block th:replace="~{/reservations/create.html::#reservationForm}" th:if="${reservation != null}"></th:block>
+
+                    <!-- Alert if Reservation not found -->
+                    <div th:unless="${reservation != null}">
+                        <div class="alert alert-danger" role="alert">
+                            Reservation not found
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </section>
+</div>
