@@ -74,13 +74,12 @@ public class ReservationController {
 
 
     // Edit a specific reservation by ID
+
     @GetMapping("{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("reservation", reservationService.findById(id));
+        model.addAttribute("flight", flightService.findById(id));
         return "reservations/edit";
     }
-
-    // Handle POST request to edit a specific reservation
     @PostMapping("/{id}/edit")
     public String edit(@PathVariable Long id, @Valid Reservation reservation, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
