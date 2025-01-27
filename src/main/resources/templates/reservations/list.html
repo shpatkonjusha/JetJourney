@@ -1,0 +1,57 @@
+<div th:replace="shared/layout :: layout('Reservation Management', ~{::section}, ~{::ol.breadcrumb})">
+    <section>
+        <main id="main" class="main">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/reservations}">Reservations</a></li>
+                <li class="breadcrumb-item active">List</li>
+            </ol>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">List of Reservations</h5>
+
+
+                    <!-- Alert when there are no reservations in the system -->
+                    <div class="row col" th:unless="${reservations != null && reservations.size() > 0}">
+                        <div class="alert alert-warning" role="alert">
+                            <strong>There are no reservations in the system!</strong>
+                        </div>
+                    </div>
+
+                    <table class="table table-hover" th:if="${reservations != null && reservations.size() > 0}">
+                        <thead>
+                        <tr>
+                            <th scope="col">Reservation ID</th>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Flight</th>
+                            <th scope="col">Seat Number</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">(Action)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="reservation : ${reservations}">
+                            <td th:text="*{reservation.id}"></td>
+                            <td th:text="*{reservation.firstName} + ' ' + *{reservation.lastName}"></td>
+                            <td th:text="*{reservation.email}"></td>
+                            <td th:text="*{reservation.phone}"></td>
+                            <td th:text="*{reservation.flight.flightNumber}"></td>
+                            <td th:text="*{reservation.seatNumber}"></td>
+                            <td th:text="*{reservation.status}"></td>
+                            <td>
+                                <a th:href="@{/reservations/{id}/details(id=*{reservation.id})}" class="btn btn-secondary btn-sm">Details</a>
+                                <a th:href="@{/reservations/{id}/edit(id=*{reservation.id})}" class="btn btn-primary btn-sm">Edit</a>
+                                <a th:href="@{/reservations/{id}/delete(id=*{reservation.id})}" class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Are you sure you want to delete this reservation?')">Delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </section>
+</div>

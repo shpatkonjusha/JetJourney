@@ -47,6 +47,8 @@
                             <a th:href="@{/flights/{id}/edit(id=*{id})}" class="btn btn-primary btn-sm">Edit</a>
                             <a th:href="@{/flights/{id}/delete(id=*{id})}" class="btn btn-danger btn-sm"
                                onclick="return confirm('Are you sure you want to delete this flight?')">Delete</a>
+                            <a th:href="@{/reservations/{id}/create(id=*{id})}" class="btn btn-primary btn-sm">Create Reservation</a>
+
                         </td>
                     </tr>
                     </tbody>

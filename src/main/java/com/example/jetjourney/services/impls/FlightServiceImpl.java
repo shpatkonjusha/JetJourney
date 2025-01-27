@@ -18,19 +18,6 @@ public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
 
-    public void add() {
-        Flight flight = new Flight();
-        flight.setFlightNumber("AA123");
-        flight.setDepartureTime("2021-12-31 23:59:59");
-        flight.setArrivalTime("2022-01-01 06:00:00");
-        flight.setOrigin("New York");
-        flight.setDestination("Los Angeles");
-        flight.setAvailableSeats(150);
-        flight.setPrice(321.0);
-        flight.setStatus(FlightStatus.valueOf("ACTIVE"));
-
-        flightRepository.save(flight);  // Don't set ID manually
-    }
 
     // Konstruktor për injektimin manual të vargut të kërkuar (për shembull, nëse është testuar manualisht)
     public FlightServiceImpl(FlightRepository flightRepository) {
@@ -43,9 +30,8 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flight findById(Long id) {
-        Optional<Flight> flight = flightRepository.findById(id);  // Gjen fluturimin me ID
-        return flight.orElse(null);  // Kthe fluturimin nëse ekziston, ndryshe kthe null
+    public Optional<Flight> findById(Long id) {
+        return flightRepository.findById(id); // Return Optional from repository
     }
 
     @Override
@@ -95,5 +81,7 @@ public class FlightServiceImpl implements FlightService {
             return new ArrayList<>();  // Mund të ktheni një listë të zbrazët ose mund të shtoni logjikë për trajtimin e gabimit
         }
     }
+
+
 
 }
