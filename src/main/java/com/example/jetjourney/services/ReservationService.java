@@ -1,5 +1,6 @@
 package com.example.jetjourney.services;
 
+import com.example.jetjourney.models.Flight;
 import com.example.jetjourney.models.Reservation;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface ReservationService {
 
     List<Reservation> findAll(); // Retrieve all reservations
 
-    Reservation findById(Long id);
+    Optional<Reservation> findById(Long id); // Update to return Optional
 
     Reservation add(Reservation reservation); // Add a new reservation
 

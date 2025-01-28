@@ -16,15 +16,16 @@
                 <form class="row g-3" th:object="${flight}" method="post" id="flightForm">
 
 
-                    <!-- Flight Number -->
-                    <div class="row mb-9">
+                    <div class="row mb-3">
                         <label for="flightNumber" class="col-sm-3 col-form-label">Flight No:</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" th:field="*{flightNumber}" required minlength="1" maxlength="100"/>
+                            <input type="text" class="form-control" th:field="*{flightNumber}" placeholder="Enter Flight Number" required />
+                            <!-- Display error message for flightNumber -->
+                            <div th:if="${#fields.hasErrors('flightNumber')}" class="text-danger">
+                                <span th:errors="*{flightNumber}">Flight number error</span>
+                            </div>
                         </div>
-
                     </div>
-
                     <!-- Origin -->
                     <div class="row mb-9">
                         <label for="origin" class="col-sm-3 col-form-label">Origin:</label>

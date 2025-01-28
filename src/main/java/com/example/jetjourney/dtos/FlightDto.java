@@ -3,6 +3,7 @@ package com.example.jetjourney.dtos;
 import com.example.jetjourney.enums.FlightStatus;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.hibernate.validator.constraints.UniqueElements;
 
 @Data
 public class FlightDto {

@@ -19,4 +19,7 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     List<Flight> findAllByStatusAndDestination(FlightStatus status, String destination);
 
     List<Flight> findAllByDepartureTime(String departureTime);
+
+    boolean existsByFlightNumber(String flightNumber);
+
 }
