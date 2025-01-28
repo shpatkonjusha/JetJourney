@@ -1,6 +1,5 @@
 package com.example.jetjourney.services;
 
-import com.example.jetjourney.enums.FlightStatus;
 import com.example.jetjourney.models.Flight;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +10,8 @@ import java.util.Optional;
 public interface FlightService {
 
     List<Flight> findAll();  // Merr të gjitha fluturimet
+
+    boolean isFlightNumberUnique(String flightNumber);
 
     Optional<Flight> findById(Long id); // Update to return Optional
 

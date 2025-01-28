@@ -77,9 +77,18 @@ public class ReservationController {
 
     @GetMapping("{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("flight", flightService.findById(id));
-        return "reservations/edit";
+        Optional<Reservation> reservation = reservationService.findById(id);
+
+        if (reservation.isPresent()) {
+            model.addAttribute("reservation", reservation.get());
+            model.addAttribute("flight", reservation.get().getFlight());  // Add flight object
+            return "reservations/edit";
+        } else {
+            return "redirect:/reservations";  // Redirect if reservation not found
+        }
     }
+
+
     @PostMapping("/{id}/edit")
     public String edit(@PathVariable Long id, @Valid Reservation reservation, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -98,10 +107,18 @@ public class ReservationController {
         return "redirect:/reservations";
     }
 
-    // View details of a specific reservation
+
     @GetMapping("/{id}/details")
     public String details(@PathVariable Long id, Model model) {
-        model.addAttribute("reservation", reservationService.findById(id));
-        return "reservations/details";
+        Optional<Reservation> reservation = reservationService.findById(id);
+
+        if (reservation.isPresent()) {
+            model.addAttribute("reservation", reservation.get());  // Pass flight object to the template
+            return "reservations/details";
+        } else {
+            return "redirect:/reservations";  // Redirect if flight not found
+        }
     }
+    // View details of a specific reservation
+
 }

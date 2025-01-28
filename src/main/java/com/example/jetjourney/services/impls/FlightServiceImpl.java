@@ -5,83 +5,85 @@ import com.example.jetjourney.enums.FlightStatus;
 import com.example.jetjourney.models.Flight;
 import com.example.jetjourney.repositories.FlightRepository;
 import com.example.jetjourney.services.FlightService;
-import jdk.jfr.Timestamp;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
 
-
-    // Konstruktor për injektimin manual të vargut të kërkuar (për shembull, nëse është testuar manualisht)
+    // Constructor for dependency injection
     public FlightServiceImpl(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
     }
 
+    // Check if the flight number is unique
+    public boolean isFlightNumberUnique(String flightNumber) {
+        return flightRepository.existsByFlightNumber(flightNumber);
+    }
+
     @Override
     public List<Flight> findAll() {
-        return flightRepository.findAll();  // Merr të gjitha fluturimet nga repository
+        return flightRepository.findAll();
     }
 
     @Override
     public Optional<Flight> findById(Long id) {
-        return flightRepository.findById(id); // Return Optional from repository
+        return flightRepository.findById(id);
     }
 
     @Override
     public Flight add(Flight flight) {
-        System.out.println("Adding flight: " + flight);  // Log to check if flight is being passed correctly
+        // Check if the flight number is unique before saving
+        if (isFlightNumberUnique(flight.getFlightNumber())) {
+            throw new IllegalArgumentException("Flight number must be unique.");
+        }
+        System.out.println("Adding flight: " + flight);
         return flightRepository.save(flight);
     }
 
     @Override
     public Flight modify(Flight flight) {
         if (flightRepository.existsById(flight.getId())) {
-            return flightRepository.save(flight);  // Përditëso fluturimin në repository
+            // Check if the flight number has changed and if it's unique
+            if (isFlightNumberUnique(flight.getFlightNumber())) {
+                throw new IllegalArgumentException("Flight number must be unique.");
+            }
+            return flightRepository.save(flight);
         }
-        return null;  // Nëse fluturimi nuk ekziston, kthe null
+        return null;
     }
+
     @Override
     public void deleteById(Long id) {
         var existingFlight = findById(id);
-        if (existingFlight == null) {
-            System.out.println("Flight me kete id nuk ekziston: " + id);
+        if (!existingFlight.isPresent()) {
+            System.out.println("Flight with id " + id + " does not exist.");
             return;
         }
         flightRepository.deleteById(id);
-//        repository.delete(existingDriver);
     }
-
-
 
     @Override
     public List<Flight> findAllByOrigin(String origin) {
-        return flightRepository.findAllByOrigin(origin);  // Gjen fluturimet nga origjina e caktuar
+        return flightRepository.findAllByOrigin(origin);
     }
 
     @Override
     public List<Flight> findAllByDestination(String destination) {
-        return flightRepository.findAllByDestination(destination);  // Gjen fluturimet për destinacionin e caktuar
+        return flightRepository.findAllByDestination(destination);
     }
-
 
     @Override
     public List<Flight> findAllByStatus(String status) {
         try {
-            FlightStatus flightStatus = FlightStatus.valueOf(status.toUpperCase());  // Konvertoni String në enum
-            return flightRepository.findAllByStatus(flightStatus);  // Përdorni FlightStatus në repository
+            FlightStatus flightStatus = FlightStatus.valueOf(status.toUpperCase());
+            return flightRepository.findAllByStatus(flightStatus);
         } catch (IllegalArgumentException e) {
-            // Nëse statusi nuk është valid, mund të trajtoni gabimin ose të ktheni një listë të zbrazët
-            return new ArrayList<>();  // Mund të ktheni një listë të zbrazët ose mund të shtoni logjikë për trajtimin e gabimit
+            return new ArrayList<>();
         }
     }
-
-
-
 }

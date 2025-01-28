@@ -8,10 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
@@ -42,25 +40,42 @@ public class FlightsController {
         return "reservations/create";
     }
 
-
     @PostMapping("/create")
     public String add(@Valid Flight flight, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        try {
+            // Check for unique flight number
+            if (flightService.isFlightNumberUnique(flight.getFlightNumber())) {
+                bindingResult.rejectValue("flightNumber", "error.flightNumber", "Flight number must be unique.");
+            }
 
+            if (bindingResult.hasErrors()) {
+                return "flights/create";  // Return to the create page with errors
+            }
 
-        // Log the ID to verify it's not null
-        System.out.println("Flight ID: " + flight.getId());
+            flightService.add(flight);  // Add the flight if validation passes
 
-        flightService.add(flight);
-        return "redirect:/flights";
+            redirectAttributes.addFlashAttribute("successMessage", "Flight successfully added!");
+            return "redirect:/flights";  // Redirect to the list of flights
+        } catch (IllegalArgumentException ex) {
+            // Handle the exception and show an error message if flight number is not unique
+            bindingResult.rejectValue("flightNumber", "error.flightNumber", ex.getMessage());
+            return "flights/create";  // Return to the create page with the error
+        }
     }
+
 
 
     @GetMapping("{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("flight", flightService.findById(id));
-        return "flights/edit";
-    }
+        Optional<Flight> flight = flightService.findById(id);
 
+        if (flight.isPresent()) {
+            model.addAttribute("flight", flight.get());  // Pass flight object to the template
+            return "flights/edit";
+        } else {
+            return "redirect:/flights";  // Redirect if flight not found
+        }
+    }
     @PostMapping("/{id}/edit")
     public String edit(@PathVariable Long id, @Valid Flight flight, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {

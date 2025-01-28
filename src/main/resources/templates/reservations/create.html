@@ -11,7 +11,7 @@
                     <h5 class="card-title">Create New Reservation</h5>
 
                     <!-- Reservation Form -->
-                    <form th:action="@{/reservations/{flightId}/create(flightId=${flight.id})}" th:object="${reservation}" method="post">
+                    <form th:action="@{/reservations/{flightId}/create(flightId=${flight.id})}" th:object="${reservation}" method="post" id="reservationForm" >
                         <!-- Hidden Flight ID -->
                         <input type="hidden" th:field="*{flight.id}" th:value="${flight.id}" />
 
