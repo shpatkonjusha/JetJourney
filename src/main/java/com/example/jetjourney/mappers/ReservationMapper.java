@@ -2,7 +2,6 @@ package com.example.jetjourney.mappers;
 
 import com.example.jetjourney.dtos.ReservationDTO;
 import com.example.jetjourney.models.Reservation;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class ReservationMapper {
 
@@ -30,9 +29,7 @@ public class ReservationMapper {
         reservation.setPersonalId(dto.getPersonalId());
         reservation.setSeatNumber(dto.getSeatNumber());
         reservation.setStatus(dto.getStatus());
-        // Assuming flight is linked by flightNumber
-        // You would fetch the flight from the database based on flightNumber and set it here
-        // flightRepository.findByFlightNumber(dto.getFlightNumber())
+
         return reservation;
     }
 }

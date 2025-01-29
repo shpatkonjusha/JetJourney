@@ -11,7 +11,6 @@ public interface ReservationService {
     List<Reservation> findAll(); // Retrieve all reservations
 
     Optional<Reservation> findById(Long id); // Update to return Optional
-
     Reservation add(Reservation reservation); // Add a new reservation
 
     Reservation modify(Reservation reservation); // Update an existing reservation

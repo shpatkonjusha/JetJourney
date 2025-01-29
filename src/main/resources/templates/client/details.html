@@ -1,0 +1,88 @@
+<div th:replace="sharedClient/layout :: layout('Welcome to My Page', ~{::section}, ~{::ol.breadcrumb})">
+    <section>
+        <main id="main" class="main">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/client}">List</a></li>
+                <li class="breadcrumb-item active">Details</li>
+            </ol>
+        <section class="section profile" id="flightDetails">
+            <div class="card" th:unless="${flight!=null}">
+                <div class="card-body">
+                    <div style="margin: 5px;">
+                        <div class="alert alert-danger" role="alert">
+                            Flight not found
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" th:object="${flight}" th:if="${flight!=null}">
+                <div class="col-xl-4">
+
+                    <div class="card">
+                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                            <!-- Display flight details with flight number -->
+                            <h2><span th:text="*{flightNumber}"></span></h2>
+                            <h3>Flight Details</h3>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-8">
+
+                    <div class="card">
+                        <div class="card-body pt-3">
+                            <!-- Flight Details -->
+                            <h5 class="card-title">Flight Information</h5>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Flight Number</div>
+                                <div class="col-lg-9 col-md-8"><span th:text="*{flightNumber}"></span></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Origin</div>
+                                <div class="col-lg-9 col-md-8"><span th:text="*{origin}"></span></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Destination</div>
+                                <div class="col-lg-9 col-md-8"><span th:text="*{destination}"></span></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Departure Time</div>
+                                <div class="col-lg-9 col-md-8"><span th:text="*{departureTime}"></span></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Arrival Time</div>
+                                <div class="col-lg-9 col-md-8"><span th:text="*{arrivalTime}"></span></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Price</div>
+                                <div class="col-lg-9 col-md-8"><span th:text="*{price}"></span></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Available Seats</div>
+                                <div class="col-lg-9 col-md-8"><span th:text="*{availableSeats}"></span></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Status</div>
+                                <div class="col-lg-9 col-md-8">
+                                    <span th:text="*{status}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        </main>
+    </section>
+</div>

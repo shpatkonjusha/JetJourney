@@ -1,9 +1,8 @@
-<div th:replace="shared/layout :: layout('Create New Reservation', ~{::section}, ~{::ol.breadcrumb})">
+<div th:replace="sharedClient/layout :: layout('Create New Reservation', ~{::section}, ~{::ol.breadcrumb})">
     <section>
         <main id="main" class="main">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item"><a th:href="@{/reservations}">Reservations</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/client}">List</a></li>
                 <li class="breadcrumb-item active">Create</li>
             </ol>
             <div class="card">
@@ -11,7 +10,7 @@
                     <h5 class="card-title">Create New Reservation</h5>
 
                     <!-- Reservation Form -->
-                    <form th:object="${reservation}" method="post" id="reservationForm" >
+                    <form th:action="@{/client/{flightId}/create(flightId=${flight.id})}" th:object="${reservation}" method="post" id="reservationForm" >
                         <!-- Hidden Flight ID -->
                         <input type="hidden" th:field="*{flight.id}" th:value="${flight.id}" />
 
@@ -78,9 +77,7 @@
                             <label for="status" class="col-sm-3 col-form-label">Status:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" th:field="*{status}">
-                                    <option value="CONFIRMED" th:selected="${reservation.status == 'CONFIRMED'}">Confirmed</option>
                                     <option value="PENDING" th:selected="${reservation.status == 'PENDING'}">Pending</option>
-                                    <option value="CANCELLED" th:selected="${reservation.status == 'CANCELLED'}">Cancelled</option>
                                 </select>
                             </div>
                         </div>
