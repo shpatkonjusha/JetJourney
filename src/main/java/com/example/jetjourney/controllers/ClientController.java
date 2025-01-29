@@ -14,21 +14,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/reservations")
-public class ReservationController {
+@RequestMapping("/client")
+public class ClientController {
 
     private final ReservationService reservationService;
     private final FlightService flightService;
-    public ReservationController(ReservationService reservationService, FlightService flightService) {
+
+
+
+    public ClientController(ReservationService reservationService, FlightService flightService) {
         this.reservationService = reservationService;
         this.flightService = flightService;
     }
 
     // Display all reservations
     @GetMapping("")
-    public String reservations(Model model) {
-        model.addAttribute("reservations", reservationService.findAll());
-        return "reservations/list";
+    public String flights(Model model) {
+        model.addAttribute("flights", flightService.findAll());
+        return "client/list";
     }
 
     // Display form to create a new reservation
@@ -41,9 +44,9 @@ public class ReservationController {
         if (flight.isPresent()) {
             model.addAttribute("flight", flight.get());
             model.addAttribute("reservation", new Reservation());
-            return "reservations/create"; // Correct template for form
+            return "client/create"; // Correct template for form
         } else {
-            return "redirect:/flights"; // Redirect if flight not found
+            return "redirect:/client"; // Redirect if flight not found
         }
     }
 
@@ -64,62 +67,38 @@ public class ReservationController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("flight_id", flightId);
             model.addAttribute("flight", flight.get());
-            return "reservations/create";
+            return "client/create";
         }
 
         reservation.setFlight(flight.get()); // Set flight before saving
         reservationService.add(reservation); // Save the reservation, ID will be generated here
-        return "redirect:/reservations";
+        return "redirect:/client";
     }
 
 
     // Edit a specific reservation by ID
 
-    @GetMapping("{id}/edit")
-    public String edit(@PathVariable Long id, Model model) {
-        Optional<Reservation> reservation = reservationService.findById(id);
-
-        if (reservation.isPresent()) {
-            model.addAttribute("reservation", reservation.get());
-            model.addAttribute("flight", reservation.get().getFlight());  // Add flight object
-            return "reservations/edit";
-        } else {
-            return "redirect:/reservations";  // Redirect if reservation not found
-        }
-    }
 
 
 
-    @PostMapping("/{id}/edit")
-    public String edit(@PathVariable Long id, @Valid Reservation reservation, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("reservation", reservation);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.flight", bindingResult);
-            return "redirect:/reservations/edit/" + id;
-        }
-        reservationService.modify(reservation);
-        return "redirect:/reservations";
-    }
+
 
     // Delete a specific reservation by ID
-    @GetMapping("{id}/delete")
-    public String delete(@PathVariable Long id) {
-        reservationService.deleteById(id);
-        return "redirect:/reservations";
-    }
 
 
     @GetMapping("/{id}/details")
     public String details(@PathVariable Long id, Model model) {
-        Optional<Reservation> reservation = reservationService.findById(id);
+        Optional<Flight> flight = flightService.findById(id);
 
-        if (reservation.isPresent()) {
-            model.addAttribute("reservation", reservation.get());  // Pass flight object to the template
-            return "reservations/details";
+        if (flight.isPresent()) {
+            model.addAttribute("flight", flight.get());  // Pass flight object to the template
+            return "client/details";
         } else {
-            return "redirect:/reservations";  // Redirect if flight not found
+            return "redirect:/client";  // Redirect if flight not found
         }
     }
+
+
     // View details of a specific reservation
 
 }

@@ -22,8 +22,8 @@ public class Reservation {
     @Column(nullable = false, length = 100)
     private String lastName;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String email; // Unique because it's often used to identify reservations
+    @Column(nullable = false, length = 100)
+    private String email;
 
     @Column(nullable = false, length = 20)
     private String phone;

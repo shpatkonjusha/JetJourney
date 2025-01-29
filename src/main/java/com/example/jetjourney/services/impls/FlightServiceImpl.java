@@ -49,9 +49,7 @@ public class FlightServiceImpl implements FlightService {
     public Flight modify(Flight flight) {
         if (flightRepository.existsById(flight.getId())) {
             // Check if the flight number has changed and if it's unique
-            if (isFlightNumberUnique(flight.getFlightNumber())) {
-                throw new IllegalArgumentException("Flight number must be unique.");
-            }
+
             return flightRepository.save(flight);
         }
         return null;
