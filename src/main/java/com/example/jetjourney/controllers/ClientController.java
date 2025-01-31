@@ -11,6 +11,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Optional;
 
 @Controller
@@ -20,46 +27,61 @@ public class ClientController {
     private final ReservationService reservationService;
     private final FlightService flightService;
 
-
-
     public ClientController(ReservationService reservationService, FlightService flightService) {
         this.reservationService = reservationService;
         this.flightService = flightService;
     }
 
-    // Display all reservations
+    private boolean isAuthenticated(HttpServletRequest request, HttpSession session) {
+        boolean isAuthenticated = false;
+
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("userRole".equals(cookie.getName()) && "CLIENT".equals(session.getAttribute("role"))) {
+                    isAuthenticated = true;
+                    break;
+                }
+            }
+        }
+
+        return isAuthenticated;
+    }
+
     @GetMapping("")
-    public String flights(Model model) {
+    public String flights(HttpServletRequest request, HttpSession session, Model model) {
+        if (!isAuthenticated(request, session)) {
+            return "redirect:/login";
+        }
+
         model.addAttribute("flights", flightService.findAll());
         return "client/list";
     }
 
-    // Display form to create a new reservation
-
-    // Display form to create a new reservation
     @GetMapping("{flightId}/create")
-    public String createReservationForm(@PathVariable Long flightId, Model model) {
-        Optional<Flight> flight = flightService.findById(flightId);
+    public String createReservationForm(@PathVariable Long flightId, HttpServletRequest request, HttpSession session, Model model) {
+        if (!isAuthenticated(request, session)) {
+            return "redirect:/login";
+        }
 
+        Optional<Flight> flight = flightService.findById(flightId);
         if (flight.isPresent()) {
             model.addAttribute("flight", flight.get());
             model.addAttribute("reservation", new Reservation());
-            return "client/create"; // Correct template for form
+            return "client/create";
         } else {
-            return "redirect:/client"; // Redirect if flight not found
+            return "redirect:/client";
         }
     }
 
-    // Handle POST request to create a new reservation
     @PostMapping("{flightId}/create")
-    public String createReservation(
-            @PathVariable Long flightId,
-            @Valid Reservation reservation,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
-            Model model) {
-        Optional<Flight> flight = flightService.findById(flightId);
+    public String createReservation(@PathVariable Long flightId, @Valid Reservation reservation,
+                                    BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                                    HttpServletRequest request, HttpSession session, Model model) {
+        if (!isAuthenticated(request, session)) {
+            return "redirect:/login";
+        }
 
+        Optional<Flight> flight = flightService.findById(flightId);
         if (!flight.isPresent()) {
             return "redirect:/flights";
         }
@@ -70,35 +92,23 @@ public class ClientController {
             return "client/create";
         }
 
-        reservation.setFlight(flight.get()); // Set flight before saving
-        reservationService.add(reservation); // Save the reservation, ID will be generated here
+        reservation.setFlight(flight.get());
+        reservationService.add(reservation);
         return "redirect:/client";
     }
 
-
-    // Edit a specific reservation by ID
-
-
-
-
-
-
-    // Delete a specific reservation by ID
-
-
     @GetMapping("/{id}/details")
-    public String details(@PathVariable Long id, Model model) {
-        Optional<Flight> flight = flightService.findById(id);
+    public String details(@PathVariable Long id, HttpServletRequest request, HttpSession session, Model model) {
+        if (!isAuthenticated(request, session)) {
+            return "redirect:/login";
+        }
 
+        Optional<Flight> flight = flightService.findById(id);
         if (flight.isPresent()) {
-            model.addAttribute("flight", flight.get());  // Pass flight object to the template
+            model.addAttribute("flight", flight.get());
             return "client/details";
         } else {
-            return "redirect:/client";  // Redirect if flight not found
+            return "redirect:/client";
         }
     }
-
-
-    // View details of a specific reservation
-
 }
